@@ -20,17 +20,17 @@ async function updatePost(postId) {
 	return response.json();
 }
 
-const { mutate } = useMutation((postId) => updatePost(postId));
-
 export function PostDetail({ post }) {
 	const { data, isError, error, isLoading } = useQuery(["fetchCom"], () =>
 		fetchComments(post.id),
 	);
 
+	const updateMutation = useMutation((postId) => updatePost(postId));
+
 	return (
 		<>
 			<h3 style={{ color: "blue" }}>{post.title}</h3>
-			<button>Delete</button> <button onClick={mutate(post.postId)}>Update title</button>
+			<button>Delete</button> <button onClick={() => updateMutation.mutate(post.id)}>Update title</button>
 			<p>{post.body}</p>
 			{isLoading ? (
 				<h1>Loading comments...</h1>
